@@ -14,8 +14,8 @@ namespace GildedRose.Tests
                 new AgedBrie(2, 0),
                 new ElixirOfTheMongoose(5, 7),
                 new Sulfuras(0, 80),
-                new BackstagePasses(15, 20),
-                //new Item {Name = CONJURED_NAME, SellIn = 3, Quality = 6}
+                new BackstagePasses(10, 49),
+                new Conjured(3, 6),
             };
         }
 
@@ -24,11 +24,22 @@ namespace GildedRose.Tests
             return itemToEvaluate.Quality >= 0 && itemToEvaluate.Quality <= 50;
         }
 
+        private int AdjustQualityMinToTheLimit(int qualityUpdated, int qualityMin)
+        {
+            return qualityUpdated < qualityMin ? qualityMin : qualityUpdated;
+        }
+
+        private int AdjustQualityMaxToTheLimit(int qualityUpdated, int qualityMax)
+        {
+            return qualityUpdated > qualityMax ? qualityMax : qualityUpdated;
+        }
+
         [Fact]
         public void TestPlus5DexterityVest()
         {
             var items = InitializeItems();
             var itemExecution = new ItemExecution(items);
+            int qualityMin = 0;
 
             foreach (var itemToEvaluate in itemExecution.Items.Where(x => x is Plus5DexterityVest))
             {
@@ -37,8 +48,9 @@ namespace GildedRose.Tests
 
                 itemToEvaluate.UpdateItem();
 
+                int qualityUpdated = qualityBefore - 1;
                 Assert.Equal(sellInBefore - 1, itemToEvaluate.SellIn);
-                Assert.Equal(qualityBefore - 1, itemToEvaluate.Quality);
+                Assert.Equal(AdjustQualityMinToTheLimit(qualityUpdated, qualityMin), itemToEvaluate.Quality);
                 Assert.True(CommonRuleLimits(itemToEvaluate));
             }
         }
@@ -48,6 +60,7 @@ namespace GildedRose.Tests
         {
             var items = InitializeItems();
             var itemExecution = new ItemExecution(items);
+            int qualityMax = 50;
 
             foreach (var itemToEvaluate in itemExecution.Items.Where(x => x is AgedBrie))
             {
@@ -56,8 +69,9 @@ namespace GildedRose.Tests
 
                 itemToEvaluate.UpdateItem();
 
+                int qualityUpdated = qualityBefore + 1;
                 Assert.Equal(sellInBefore - 1, itemToEvaluate.SellIn);
-                Assert.Equal(qualityBefore + 1, itemToEvaluate.Quality);
+                Assert.Equal(AdjustQualityMaxToTheLimit(qualityUpdated, qualityMax), itemToEvaluate.Quality);
                 Assert.True(CommonRuleLimits(itemToEvaluate));
             }
         }
@@ -67,6 +81,7 @@ namespace GildedRose.Tests
         {
             var items = InitializeItems();
             var itemExecution = new ItemExecution(items);
+            int qualityMin = 0;
 
             foreach (var itemToEvaluate in itemExecution.Items.Where(x => x is ElixirOfTheMongoose))
             {
@@ -75,8 +90,9 @@ namespace GildedRose.Tests
 
                 itemToEvaluate.UpdateItem();
 
+                int qualityUpdated = qualityBefore - 1;
                 Assert.Equal(sellInBefore - 1, itemToEvaluate.SellIn);
-                Assert.Equal(qualityBefore - 1, itemToEvaluate.Quality);
+                Assert.Equal(AdjustQualityMinToTheLimit(qualityUpdated, qualityMin), itemToEvaluate.Quality);
                 Assert.True(CommonRuleLimits(itemToEvaluate));
             }
         }
@@ -110,9 +126,11 @@ namespace GildedRose.Tests
 
             var items = InitializeItems();
             var itemExecution = new ItemExecution(items);
+            int qualityMax = 50;
 
             foreach (var itemToEvaluate in itemExecution.Items.Where(x => x is BackstagePasses))
             {
+                int sellInBefore = itemToEvaluate.SellIn;
                 int qualityBefore = itemToEvaluate.Quality;
 
                 itemToEvaluate.UpdateItem();
@@ -121,25 +139,32 @@ namespace GildedRose.Tests
 
                 if (itemToEvaluate.SellIn == adjustRealSellIn(0))
                 {
+                    Assert.Equal(sellInBefore - 1, itemToEvaluate.SellIn);
                     Assert.Equal(0, itemToEvaluate.Quality);
                     return;
                 }
 
                 if (itemToEvaluate.SellIn > adjustRealSellIn(0) && itemToEvaluate.SellIn <= adjustRealSellIn(5))
                 {
-                    Assert.Equal(qualityBefore + 3, itemToEvaluate.Quality);
+                    int qualityUpdated = qualityBefore + 3;
+                    Assert.Equal(sellInBefore - 1, itemToEvaluate.SellIn);
+                    Assert.Equal(AdjustQualityMaxToTheLimit(qualityUpdated, qualityMax), itemToEvaluate.Quality);
                     return;
                 }
 
                 if (itemToEvaluate.SellIn > adjustRealSellIn(5) && itemToEvaluate.SellIn <= adjustRealSellIn(10))
                 {
-                    Assert.Equal(qualityBefore + 2, itemToEvaluate.Quality);
+                    int qualityUpdated = qualityBefore + 2;
+                    Assert.Equal(sellInBefore - 1, itemToEvaluate.SellIn);
+                    Assert.Equal(AdjustQualityMaxToTheLimit(qualityUpdated, qualityMax), itemToEvaluate.Quality);
                     return;
                 }
 
                 if (itemToEvaluate.SellIn > adjustRealSellIn(10))
                 {
-                    Assert.Equal(qualityBefore + 1, itemToEvaluate.Quality);
+                    int qualityUpdated = qualityBefore + 1;
+                    Assert.Equal(sellInBefore - 1, itemToEvaluate.SellIn);
+                    Assert.Equal(AdjustQualityMaxToTheLimit(qualityUpdated, qualityMax), itemToEvaluate.Quality);
                     return;
                 }
             }
