@@ -34,6 +34,11 @@ namespace GildedRose.Tests
             return qualityUpdated > qualityMax ? qualityMax : qualityUpdated;
         }
 
+        private bool DateHasPassed(int sellIn)
+        {
+            return sellIn < 0;
+        }
+
         [Fact]
         public void TestPlus5DexterityVest()
         {
@@ -48,7 +53,13 @@ namespace GildedRose.Tests
 
                 itemToEvaluate.UpdateItem();
 
-                int qualityUpdated = qualityBefore - 1;
+                int degradeByNormal = 1;
+                int degradeByTwice = degradeByNormal * 2;
+
+                int qualityUpdated = DateHasPassed(sellInBefore) ?
+                    qualityBefore - degradeByTwice :
+                    qualityBefore - degradeByNormal;
+
                 Assert.Equal(sellInBefore - 1, itemToEvaluate.SellIn);
                 Assert.Equal(AdjustQualityMinToTheLimit(qualityUpdated, qualityMin), itemToEvaluate.Quality);
                 Assert.True(CommonRuleLimits(itemToEvaluate));
@@ -90,7 +101,13 @@ namespace GildedRose.Tests
 
                 itemToEvaluate.UpdateItem();
 
-                int qualityUpdated = qualityBefore - 1;
+                int degradeByNormal = 1;
+                int degradeByTwice = degradeByNormal * 2;
+
+                int qualityUpdated = DateHasPassed(sellInBefore) ?
+                    qualityBefore - degradeByTwice :
+                    qualityBefore - degradeByNormal;
+
                 Assert.Equal(sellInBefore - 1, itemToEvaluate.SellIn);
                 Assert.Equal(AdjustQualityMinToTheLimit(qualityUpdated, qualityMin), itemToEvaluate.Quality);
                 Assert.True(CommonRuleLimits(itemToEvaluate));
@@ -184,7 +201,13 @@ namespace GildedRose.Tests
 
                 itemToEvaluate.UpdateItem();
 
-                int qualityUpdated = qualityBefore - 2;
+                int degradeByNormal = 2;
+                int degradeByTwice = degradeByNormal * 2;
+
+                int qualityUpdated = DateHasPassed(sellInBefore) ?
+                    qualityBefore - degradeByTwice :
+                    qualityBefore - degradeByNormal;
+
                 Assert.Equal(sellInBefore - 1, itemToEvaluate.SellIn);
                 Assert.Equal(AdjustQualityMinToTheLimit(qualityUpdated, qualityMin), itemToEvaluate.Quality);
                 Assert.True(CommonRuleLimits(itemToEvaluate));

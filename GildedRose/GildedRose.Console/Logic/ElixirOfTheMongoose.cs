@@ -19,10 +19,21 @@ namespace GildedRose.Console.Logic
 
         public override void UpdateItem()
         {
+            int degradeByNormal = 1;
+            int degradeByTwice = degradeByNormal * 2;
+
+            Quality = DateHasPassed() ?
+                Quality - degradeByTwice :
+                Quality - degradeByNormal;
+
             SellIn -= 1;
-            Quality -= 1;
 
             Quality = Quality < QUALITY_MIN ? QUALITY_MIN : Quality;
+        }
+
+        private bool DateHasPassed()
+        {
+            return SellIn < 0;
         }
     }
 }
