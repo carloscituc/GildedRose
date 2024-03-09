@@ -1,7 +1,7 @@
 # Refactored code as part of the CodelyTV SOLID course
 Hello, I'm Carlos Cituc, I have carried out the refactoring of the
 GildedRose Kata as part of the CodelyTV SOLID course.
-CodelyTV community, my desire is to continue learning and improving, 
+<br />CodelyTV community, my desire is to continue learning and improving, 
 so feel free to give me feedback.
 
 # Gilded Rose Refactoring Kata (Instructions)
