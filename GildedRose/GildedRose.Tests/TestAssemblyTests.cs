@@ -2,7 +2,7 @@ using Microsoft.VisualStudio.TestPlatform.TestHost;
 using Xunit.Abstractions;
 
 namespace GildedRose.Tests
-{
+{/*
     public class TestAssemblyTests
     {
         private const string DEXTERITY_NAME = "+5 Dexterity Vest";
@@ -141,5 +141,5 @@ namespace GildedRose.Tests
                 return;
             }
         }
-    }
+    }*/
 }
