@@ -14,12 +14,7 @@ namespace GildedRose.Tests
                 new AgedBrie(2, 0),
                 new ElixirOfTheMongoose(5, 7),
                 new Sulfuras(0, 80),
-                new BackstagePasses(0, 20),
-                //    {
-                //        Name = BACKSTAGE_PASSES_NAME,
-                //        SellIn = 15,
-                //        Quality = 20
-                //    },
+                new BackstagePasses(15, 20),
                 //new Item {Name = CONJURED_NAME, SellIn = 3, Quality = 6}
             };
         }

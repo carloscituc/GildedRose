@@ -22,16 +22,9 @@ namespace GildedRose.Console.Logic
             return Quality >= QUALITY_MIN && Quality <= QUALITY_MAX;
         }
 
-        private bool IsQualityInLimits()
-        {
-            return Quality == QUALITY_MAX;
-        }
-
         public override void UpdateItem()
         {
-            if (IsQualityInLimits()) return;
-
-            if (SellIn == 0)
+            if (SellIn <= 0)
             {
                 SellIn -= 1;
                 Quality = 0;
@@ -42,6 +35,7 @@ namespace GildedRose.Console.Logic
             {
                 SellIn -= 1;
                 Quality += 3;
+                Quality = AdjustQualityToTheLimit();
                 return;
             }
 
@@ -49,6 +43,7 @@ namespace GildedRose.Console.Logic
             {
                 SellIn -= 1;
                 Quality += 2;
+                Quality = AdjustQualityToTheLimit();
                 return;
             }
 
@@ -56,8 +51,14 @@ namespace GildedRose.Console.Logic
             {
                 SellIn -= 1;
                 Quality += 1;
+                Quality = AdjustQualityToTheLimit();
                 return;
             }
+        }
+
+        private int AdjustQualityToTheLimit()
+        {
+            return Quality > QUALITY_MAX ? QUALITY_MAX : Quality;
         }
     }
 }

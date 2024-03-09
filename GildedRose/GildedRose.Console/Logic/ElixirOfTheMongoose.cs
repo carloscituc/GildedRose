@@ -17,17 +17,12 @@ namespace GildedRose.Console.Logic
             return Quality >= QUALITY_MIN && Quality <= QUALITY_MAX;
         }
 
-        private bool IsQualityInLimits()
-        {
-            return Quality == QUALITY_MIN;
-        }
-
         public override void UpdateItem()
         {
-            if (IsQualityInLimits()) return;
-
             SellIn -= 1;
             Quality -= 1;
+
+            Quality = Quality < QUALITY_MIN ? QUALITY_MIN : Quality;
         }
     }
 }
