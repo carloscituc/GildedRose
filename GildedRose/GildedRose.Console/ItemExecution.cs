@@ -9,7 +9,7 @@ namespace GildedRose.Console
         public ItemExecution(List<Item> items)
         {
             Items = items;
-        }   
+        }
 
         public void UpdateQuality()
         {

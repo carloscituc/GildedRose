@@ -14,7 +14,8 @@ namespace GildedRose.Tests
                 new AgedBrie(2, 0),
                 new ElixirOfTheMongoose(5, 7),
                 new Sulfuras(0, 80),
-                new BackstagePasses(10, 49),
+                new BackstagePasses(15, 20),
+                new Conjured(3, 6),
             };
         }
 
@@ -166,6 +167,27 @@ namespace GildedRose.Tests
                     Assert.Equal(AdjustQualityMaxToTheLimit(qualityUpdated, qualityMax), itemToEvaluate.Quality);
                     return;
                 }
+            }
+        }
+
+        [Fact]
+        public void TestConjured()
+        {
+            var items = InitializeItems();
+            var itemExecution = new ItemExecution(items);
+            int qualityMin = 0;
+
+            foreach (var itemToEvaluate in itemExecution.Items.Where(x => x is Conjured))
+            {
+                var sellInBefore = itemToEvaluate.SellIn;
+                var qualityBefore = itemToEvaluate.Quality;
+
+                itemToEvaluate.UpdateItem();
+
+                int qualityUpdated = qualityBefore - 2;
+                Assert.Equal(sellInBefore - 1, itemToEvaluate.SellIn);
+                Assert.Equal(AdjustQualityMinToTheLimit(qualityUpdated, qualityMin), itemToEvaluate.Quality);
+                Assert.True(CommonRuleLimits(itemToEvaluate));
             }
         }
     }
