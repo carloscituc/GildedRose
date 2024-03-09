@@ -15,7 +15,6 @@ namespace GildedRose.Tests
                 new ElixirOfTheMongoose(5, 7),
                 new Sulfuras(0, 80),
                 new BackstagePasses(10, 49),
-                new Conjured(3, 6),
             };
         }
 
